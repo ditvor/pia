@@ -1,6 +1,6 @@
 # PIA — Product Context Graph for Engineering Teams
 
-PIA builds a persistent **Product Context Graph** inside your JetBrains IDE — connecting customer feedback, YouTrack tickets, your codebase, and shipped outcomes into a single queryable intelligence layer. Engineers understand *why* before they write a line of code. PMs prioritize with data, not gut feel. The graph compounds with every sprint.
+PIA (Product Intelligence Agent) builds a persistent **Product Context Graph** inside your JetBrains IDE — connecting customer feedback, YouTrack tickets, your codebase, and shipped outcomes into a single queryable intelligence layer. Engineers understand *why* before they write a line of code. PMs prioritize with data, not gut feel. The graph compounds with every sprint.
 
 **Website:** [pia-alpha.netlify.app](https://pia-alpha.netlify.app)
 
