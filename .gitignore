@@ -44,6 +44,7 @@ htmlcov/
 # Private documents — kept locally, never committed
 PRODUCT-INTELLIGENCE-AGENT.md
 PUBLICATION-PLAN.md
+ACP-REGISTRY-SUBMISSION.md
 
 # Claude Code local settings
 .claude/settings.local.json
