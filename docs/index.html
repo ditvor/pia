@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PIA — Product Intelligence Agent</title>
-  <meta name="description" content="PIA lives in your JetBrains IDE and enriches YouTrack tickets with codebase context, linked issues, and business signals — before you touch a line of code." />
+  <title>PIA — Product Context Graph for Engineering Teams</title>
+  <meta name="description" content="PIA (Product Intelligence Agent) builds a persistent Product Context Graph inside your JetBrains IDE — connecting customer feedback, YouTrack tickets, and your codebase into a single intelligence layer for engineers and PMs." />
 
   <!-- Favicon: filled white circle on JetBrains blue square -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23087CFA'/><circle cx='16' cy='16' r='9' fill='white'/></svg>">
@@ -255,13 +255,14 @@
 
         <!-- Fraunces serif headline — Anthropic-like editorial weight -->
         <h1 class="heading mb-6" style="font-size:clamp(2.4rem,4.2vw,3.5rem); line-height:1.06">
-          From ticket ID<br>to full context.
+          The Product Context Graph<br>for your IDE.
         </h1>
 
         <p class="text-lg leading-relaxed mb-8" style="color:var(--ink-500); max-width:440px; font-weight:400">
-          PIA lives in your JetBrains IDE. Type a YouTrack ticket ID — get the
-          relevant files, linked issues, and business context before you write
-          a line of code.
+          PIA builds a persistent intelligence layer inside your JetBrains IDE —
+          connecting customer feedback, YouTrack tickets, and your codebase.
+          Engineers know <em>why</em>. PMs prioritize with data. The graph
+          compounds with every sprint.
         </p>
 
         <div class="flex flex-col sm:flex-row items-start gap-3">
@@ -532,14 +533,14 @@
 
     <div class="text-center mb-10">
       <p class="section-label mb-3">Roadmap</p>
-      <h2 class="heading text-3xl md:text-4xl mb-4">Built in phases.</h2>
-      <p class="text-sm leading-relaxed mx-auto" style="color:var(--ink-500); max-width:400px">
-        Each phase adds an intelligence layer on top of the last. Phase 1 is live — the foundation is working.
+      <h2 class="heading text-3xl md:text-4xl mb-4">Built layer by layer.</h2>
+      <p class="text-sm leading-relaxed mx-auto" style="color:var(--ink-500); max-width:440px">
+        Each phase adds a new layer to the Product Context Graph. Phase 1 is live — the graph has started forming.
       </p>
     </div>
 
     <!-- Progress track -->
-    <div class="flex items-center max-w-lg mx-auto mb-14">
+    <div class="flex items-center max-w-2xl mx-auto mb-14">
       <div class="flex flex-col items-center gap-1.5">
         <div class="track-node done"></div>
         <span class="font-mono text-xs" style="color:var(--blue)">Phase 1</span>
@@ -553,6 +554,16 @@
       <div class="flex flex-col items-center gap-1.5">
         <div class="track-node planned"></div>
         <span class="font-mono text-xs" style="color:var(--ink-300)">Phase 3</span>
+      </div>
+      <div class="track-line"></div>
+      <div class="flex flex-col items-center gap-1.5">
+        <div class="track-node planned"></div>
+        <span class="font-mono text-xs" style="color:var(--ink-300)">Phase 4</span>
+      </div>
+      <div class="track-line"></div>
+      <div class="flex flex-col items-center gap-1.5">
+        <div class="track-node planned"></div>
+        <span class="font-mono text-xs" style="color:var(--ink-300)">Phase 5</span>
       </div>
     </div>
 
@@ -601,28 +612,28 @@
           <span class="font-mono text-xs" style="color:var(--ink-300)">Q2 2026</span>
         </div>
         <p class="section-label mb-1">Phase 2</p>
-        <h3 class="heading text-xl mb-1">Sprint Intelligence</h3>
-        <p class="text-xs mb-6" style="color:var(--ink-300)">Sprint-level awareness across the whole board.</p>
+        <h3 class="heading text-xl mb-1">Codebase Awareness</h3>
+        <p class="text-xs mb-6" style="color:var(--ink-300)">Replace keyword matching with LLM-powered understanding.</p>
         <ul class="space-y-2.5 text-sm" style="color:var(--ink-500)">
           <li class="flex items-start gap-2.5">
             <span style="width:5px;height:5px;border-radius:50%;background:var(--blue);display:inline-block;margin-top:7px;flex-shrink:0"></span>
-            Sprint overview — what changed since last week?
+            LLM-powered ticket-to-code linking
           </li>
           <li class="flex items-start gap-2.5">
             <span style="width:5px;height:5px;border-radius:50%;background:var(--blue);display:inline-block;margin-top:7px;flex-shrink:0"></span>
-            Dependency graph — what's blocking what?
+            Git log analysis — co-change patterns &amp; ownership
           </li>
           <li class="flex items-start gap-2.5">
             <span style="width:5px;height:5px;border-radius:50%;background:var(--blue);display:inline-block;margin-top:7px;flex-shrink:0"></span>
-            Blocker &amp; risk detection before stand-up
+            Module boundary detection
           </li>
           <li class="flex items-start gap-2.5">
             <span style="width:5px;height:5px;border-radius:50%;background:var(--blue);display:inline-block;margin-top:7px;flex-shrink:0"></span>
-            Effort estimation from similar past tickets
+            Complexity estimation from history &amp; test coverage
           </li>
           <li class="flex items-start gap-2.5">
             <span style="width:5px;height:5px;border-radius:50%;background:var(--blue);display:inline-block;margin-top:7px;flex-shrink:0"></span>
-            Team workload balance overview
+            Entry point identification for new work
           </li>
         </ul>
       </div>
@@ -662,15 +673,69 @@
       </div>
     </div>
 
-    <!-- Phase 4+ teaser -->
-    <div style="border:1.5px dashed var(--border-2); border-radius:14px; padding:20px 24px">
-      <div class="font-mono text-xs mb-4" style="color:var(--ink-300)">Beyond Phase 3 · exploring</div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="teaser-item">Contribution graph intelligence</div>
-        <div class="teaser-item">Multi-repo context</div>
-        <div class="teaser-item">Team onboarding accelerator</div>
-        <div class="teaser-item">Slack &amp; Linear integration</div>
+    <!-- Phase 4 + 5 -->
+    <div class="grid md:grid-cols-2 gap-6 mt-2">
+
+      <!-- Phase 4 -->
+      <div class="card p-7 relative overflow-hidden">
+        <div style="position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(124,82,255,.04),transparent 70%);transform:translate(25px,-25px)"></div>
+        <div class="flex items-center justify-between mb-5">
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full badge-future">Planned</span>
+          <span class="font-mono text-xs" style="color:var(--ink-300)">Q4 2026</span>
+        </div>
+        <p class="section-label mb-1" style="color:var(--purple)">Phase 4</p>
+        <h3 class="heading text-xl mb-1">Product Context Graph</h3>
+        <p class="text-xs mb-6" style="color:var(--ink-300)">Full graph assembly — every entity connected, every claim traceable.</p>
+        <ul class="space-y-2.5 text-sm" style="color:var(--ink-500)">
+          <li class="flex items-start gap-2.5">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--border-2);display:inline-block;margin-top:7px;flex-shrink:0"></span>
+            Persistent SQLite graph: customers → feedback → tickets → code → outcomes
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--border-2);display:inline-block;margin-top:7px;flex-shrink:0"></span>
+            Evidence chains — every insight traceable to raw data
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--border-2);display:inline-block;margin-top:7px;flex-shrink:0"></span>
+            Cross-source entity linking (YouTrack + Intercom + Sentry + Amplitude)
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--border-2);display:inline-block;margin-top:7px;flex-shrink:0"></span>
+            Graph survives across sessions — context compounds over time
+          </li>
+        </ul>
       </div>
+
+      <!-- Phase 5 -->
+      <div class="card p-7 relative overflow-hidden">
+        <div style="position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(124,82,255,.04),transparent 70%);transform:translate(25px,-25px)"></div>
+        <div class="flex items-center justify-between mb-5">
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full badge-future">Planned</span>
+          <span class="font-mono text-xs" style="color:var(--ink-300)">Q1 2027</span>
+        </div>
+        <p class="section-label mb-1" style="color:var(--purple)">Phase 5</p>
+        <h3 class="heading text-xl mb-1">Intelligence Layer</h3>
+        <p class="text-xs mb-6" style="color:var(--ink-300)">"What should we build next?" — answered with data.</p>
+        <ul class="space-y-2.5 text-sm" style="color:var(--ink-500)">
+          <li class="flex items-start gap-2.5">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--border-2);display:inline-block;margin-top:7px;flex-shrink:0"></span>
+            Sprint prioritization scored by ARR impact &amp; implementation risk
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--border-2);display:inline-block;margin-top:7px;flex-shrink:0"></span>
+            Post-ship impact tracking — did the feature actually work?
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--border-2);display:inline-block;margin-top:7px;flex-shrink:0"></span>
+            Data-backed sprint planning — not whoever argued loudest
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--border-2);display:inline-block;margin-top:7px;flex-shrink:0"></span>
+            Defensible prioritization rationale for every sprint decision
+          </li>
+        </ul>
+      </div>
+
     </div>
 
   </div>
