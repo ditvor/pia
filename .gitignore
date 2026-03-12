@@ -40,3 +40,9 @@ htmlcov/
 .env
 *.pem
 *.key
+
+# Private spec — kept locally for development reference only
+PRODUCT-INTELLIGENCE-AGENT.md
+
+# Claude Code local settings
+.claude/settings.local.json
