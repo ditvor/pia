@@ -2,6 +2,8 @@
 
 PIA is an ACP-compatible Python agent that runs inside JetBrains IDEs. It connects your YouTrack project management to your local codebase, using Claude to turn a raw ticket ID into a rich, actionable summary — without you having to leave the IDE.
 
+**Website:** [pia-alpha.netlify.app](https://pia-alpha.netlify.app)
+
 ## Why PIA exists
 
 Engineering teams already have Claude Code, Copilot, and a dozen other coding agents. None of them answer the questions that actually slow teams down:

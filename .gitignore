@@ -48,3 +48,4 @@ ACP-REGISTRY-SUBMISSION.md
 
 # Claude Code local settings (CLAUDE.md in repo root is intentional; .claude/ dir is not)
 .claude/
+acp-registry-submission/
