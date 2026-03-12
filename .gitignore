@@ -41,8 +41,9 @@ htmlcov/
 *.pem
 *.key
 
-# Private spec — kept locally for development reference only
+# Private documents — kept locally, never committed
 PRODUCT-INTELLIGENCE-AGENT.md
+PUBLICATION-PLAN.md
 
 # Claude Code local settings
 .claude/settings.local.json
