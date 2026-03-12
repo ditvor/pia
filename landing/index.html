@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PIA — Product Intelligence Agent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { 900: '#0F1117', 800: '#161B27', 700: '#1E2538', 600: '#252D43' },
+            violet: { 500: '#6C63FF', 400: '#8B85FF', 300: '#A8A4FF' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    @keyframes fadeInUp   { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
+    @keyframes pulseGlow  { 0%,100%{box-shadow:0 0 0 0 rgba(108,99,255,.4)} 50%{box-shadow:0 0 0 8px rgba(108,99,255,0)} }
+    @keyframes blink      { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+    @keyframes bounce3    { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+    .fade-in-up  { animation: fadeInUp .6s ease-out forwards; }
+    .glow-pulse  { animation: pulseGlow 2s infinite; }
+
+    .gradient-text {
+      background: linear-gradient(135deg,#6C63FF 0%,#22D3EE 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-bg {
+      background:
+        radial-gradient(ellipse at 65% 0%,   rgba(108,99,255,.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 20% 85%,  rgba(34,211,238,.08) 0%, transparent 50%),
+        #0F1117;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(108,99,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108,99,255,.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .card-hover { transition: transform .2s ease, box-shadow .2s ease; }
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 0 1px rgba(108,99,255,.3), 0 12px 32px rgba(108,99,255,.12);
+    }
+    .dot-bounce { display:inline-block; width:6px; height:6px; border-radius:50%; background:#6C63FF; animation:bounce3 1.2s ease-in-out infinite; }
+
+    /* Phase badges */
+    .badge-done   { background:rgba(34,197,94,.15);  border-color:rgba(34,197,94,.35);  color:#4ade80; }
+    .badge-next   { background:rgba(108,99,255,.15); border-color:rgba(108,99,255,.35); color:#8B85FF; }
+    .badge-future { background:rgba(100,116,139,.15);border-color:rgba(100,116,139,.3); color:#94a3b8; }
+  </style>
+</head>
+<body class="bg-navy-900 text-slate-100 font-sans antialiased">
+
+<!-- ─── NAV ──────────────────────────────────────────────────────────────── -->
+<nav class="fixed top-0 w-full z-50 border-b border-white/5 backdrop-blur-md bg-navy-900/80">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2.5">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="8" fill="#6C63FF"/>
+        <path d="M16 6 L21 14 H24 L17 26 L16 20 L15 26 L8 14 H11 Z" fill="white" opacity=".9"/>
+        <circle cx="16" cy="13" r="2.2" fill="white"/>
+      </svg>
+      <span class="font-mono font-semibold text-lg text-white tracking-tight">pia</span>
+    </a>
+
+    <!-- Links -->
+    <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+      <a href="#problem"      class="hover:text-white transition-colors">Problem</a>
+      <a href="#how-it-works" class="hover:text-white transition-colors">How it works</a>
+      <a href="#demo"         class="hover:text-white transition-colors">Demo</a>
+      <a href="#roadmap"      class="hover:text-white transition-colors">Roadmap</a>
+    </div>
+
+    <a href="https://github.com" class="text-sm px-4 py-2 rounded-lg border border-violet-500/50 text-violet-400 hover:bg-violet-500/10 transition-colors">
+      GitHub →
+    </a>
+  </div>
+</nav>
+
+
+<!-- ─── HERO ──────────────────────────────────────────────────────────────── -->
+<section class="hero-bg grid-bg min-h-screen flex items-center pt-16">
+  <div class="max-w-6xl mx-auto px-6 py-28 text-center">
+
+    <!-- Status badge -->
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-xs font-medium mb-8">
+      <span class="w-1.5 h-1.5 rounded-full bg-green-400 glow-pulse inline-block"></span>
+      Phase 1 complete — ticket enricher is live
+    </div>
+
+    <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-6 leading-[1.05]">
+      Every ticket,<br>
+      <span class="gradient-text">fully understood.</span>
+    </h1>
+
+    <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+      PIA lives in your JetBrains IDE and enriches YouTrack tickets with
+      codebase context, linked issues, and customer signals —
+      so your team ships with clarity, not confusion.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#demo"
+         class="px-7 py-3.5 rounded-xl bg-violet-500 hover:bg-violet-400 text-white font-semibold transition-colors glow-pulse text-sm">
+        See it in action ↓
+      </a>
+      <a href="#how-it-works"
+         class="px-7 py-3.5 rounded-xl border border-white/10 hover:border-white/20 text-slate-300 hover:text-white font-medium transition-colors text-sm">
+        How it works
+      </a>
+    </div>
+
+    <!-- Stat strip -->
+    <div class="mt-20 grid grid-cols-3 gap-6 max-w-md mx-auto">
+      <div>
+        <div class="text-2xl font-bold text-white">~30 min</div>
+        <div class="text-xs text-slate-500 mt-1">saved per ticket</div>
+      </div>
+      <div class="border-x border-white/5">
+        <div class="text-2xl font-bold text-white">3 steps</div>
+        <div class="text-xs text-slate-500 mt-1">ticket → code → brief</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold text-white">IDE-native</div>
+        <div class="text-xs text-slate-500 mt-1">JetBrains + ACP</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── PROBLEM ───────────────────────────────────────────────────────────── -->
+<section id="problem" class="py-24 border-t border-white/5">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="text-center mb-14">
+      <p class="text-violet-400 text-xs font-semibold uppercase tracking-widest mb-3">The problem</p>
+      <h2 class="text-3xl md:text-4xl font-bold">Context-switching is killing your sprints.</h2>
+      <p class="text-slate-400 mt-4 max-w-xl mx-auto text-sm leading-relaxed">
+        Engineering leads spend 30–40% of sprint planning re-building context that should already be there.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="p-7 rounded-2xl bg-navy-800 border border-white/5 card-hover">
+        <div class="text-3xl mb-5">🕵️</div>
+        <h3 class="font-semibold text-white mb-2">Archaeology every Monday</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          You open a ticket and spend 20 minutes in Slack and git history
+          trying to remember why it exists and what was already tried.
+        </p>
+      </div>
+      <div class="p-7 rounded-2xl bg-navy-800 border border-white/5 card-hover">
+        <div class="text-3xl mb-5">🗺️</div>
+        <h3 class="font-semibold text-white mb-2">Missing codebase map</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          The ticket says "fix the export bug" but you have to hunt through
+          40 service files to find the ones that are actually relevant.
+        </p>
+      </div>
+      <div class="p-7 rounded-2xl bg-navy-800 border border-white/5 card-hover">
+        <div class="text-3xl mb-5">📡</div>
+        <h3 class="font-semibold text-white mb-2">Scattered customer signals</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Customer urgency lives in Intercom. Usage data is in Amplitude.
+          Neither is visible when you're staring at a YouTrack ticket.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── HOW IT WORKS ──────────────────────────────────────────────────────── -->
+<section id="how-it-works" class="py-24 bg-navy-800/40 border-y border-white/5">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="text-center mb-14">
+      <p class="text-violet-400 text-xs font-semibold uppercase tracking-widest mb-3">How it works</p>
+      <h2 class="text-3xl md:text-4xl font-bold">Three steps. One brief.</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-10 relative">
+      <!-- connector lines -->
+      <div class="hidden md:block absolute top-9 left-[36%] w-[13%] h-px bg-gradient-to-r from-violet-500/40 to-violet-500/10"></div>
+      <div class="hidden md:block absolute top-9 right-[36%] w-[13%] h-px bg-gradient-to-l from-violet-500/40 to-violet-500/10"></div>
+
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-2xl bg-violet-500/15 border border-violet-500/30 flex items-center justify-center mx-auto mb-6 text-2xl">💬</div>
+        <div class="text-xs text-violet-400 font-mono mb-2">Step 1</div>
+        <h3 class="font-semibold text-white mb-3">Type a ticket ID</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">In your JetBrains IDE chat, type any YouTrack ticket ID. PIA detects it automatically — no commands, no forms.</p>
+        <div class="mt-5 px-4 py-2 rounded-lg bg-navy-900 border border-white/10 font-mono text-sm text-violet-300 inline-block">PROJ-4521</div>
+      </div>
+
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-2xl bg-violet-500/15 border border-violet-500/30 flex items-center justify-center mx-auto mb-6 text-2xl">⚡</div>
+        <div class="text-xs text-violet-400 font-mono mb-2">Step 2</div>
+        <h3 class="font-semibold text-white mb-3">PIA gathers context</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Fetches the ticket, scans your local codebase for relevant files, and pulls linked issues, comments, and history.</p>
+        <div class="mt-5 flex justify-center gap-2 flex-wrap">
+          <span class="px-2 py-1 rounded bg-navy-900 border border-white/10 text-xs text-slate-400">YouTrack API</span>
+          <span class="px-2 py-1 rounded bg-navy-900 border border-white/10 text-xs text-slate-400">Codebase scan</span>
+          <span class="px-2 py-1 rounded bg-navy-900 border border-white/10 text-xs text-slate-400">Claude AI</span>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-2xl bg-violet-500/15 border border-violet-500/30 flex items-center justify-center mx-auto mb-6 text-2xl">📋</div>
+        <div class="text-xs text-violet-400 font-mono mb-2">Step 3</div>
+        <h3 class="font-semibold text-white mb-3">Get your enriched brief</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Business context, relevant files, linked issues, customer signals, and suggested next steps — in one IDE response.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── DEMO ──────────────────────────────────────────────────────────────── -->
+<section id="demo" class="py-24">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <div class="text-center mb-12">
+      <p class="text-violet-400 text-xs font-semibold uppercase tracking-widest mb-3">Interactive demo</p>
+      <h2 class="text-3xl md:text-4xl font-bold">See PIA in action.</h2>
+      <p class="text-slate-400 mt-3 text-sm">Click a ticket below — this is real mock data from the Phase 1 integration tests.</p>
+    </div>
+
+    <!-- IDE window -->
+    <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl" style="box-shadow:0 0 80px rgba(108,99,255,.12)">
+
+      <!-- Title bar -->
+      <div class="bg-navy-700 px-5 py-3 flex items-center gap-3 border-b border-white/5">
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+        </div>
+        <div class="flex-1 text-center">
+          <span class="text-slate-400 text-xs font-mono">JetBrains IDE  —  PIA Agent Chat</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-1.5 h-1.5 rounded-full bg-green-400"></div>
+          <span class="text-green-400 text-xs font-mono">Connected</span>
+        </div>
+      </div>
+
+      <!-- Ticket selector bar -->
+      <div class="bg-navy-800 px-5 py-3 border-b border-white/5 flex items-center gap-3 flex-wrap">
+        <span class="text-slate-500 text-xs font-mono">Try a ticket:</span>
+        <button onclick="runDemo('csv')"
+          class="demo-pill px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer border-violet-500/40 text-violet-300 bg-violet-500/10"
+          data-key="csv">
+          PROJ-4521 · CSV Export
+        </button>
+        <button onclick="runDemo('auth')"
+          class="demo-pill px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer border-slate-600 text-slate-400 hover:border-violet-500/30 hover:text-violet-300"
+          data-key="auth">
+          AUTH-88 · Login timeout
+        </button>
+        <button onclick="runDemo('perf')"
+          class="demo-pill px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer border-slate-600 text-slate-400 hover:border-violet-500/30 hover:text-violet-300"
+          data-key="perf">
+          PERF-12 · Slow dashboard
+        </button>
+      </div>
+
+      <!-- Chat output -->
+      <div class="bg-navy-900 p-6 font-mono text-sm overflow-y-auto" style="min-height:460px" id="demo-output">
+        <div class="text-slate-600 text-center py-20">
+          <div class="text-4xl mb-3 opacity-50">⚡</div>
+          <p>Click a ticket above to see PIA enrich it</p>
+        </div>
+      </div>
+
+      <!-- Input bar -->
+      <div class="bg-navy-800 border-t border-white/5 px-5 py-3 flex items-center gap-3">
+        <div class="flex-1 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-navy-900 border border-white/10 text-xs text-slate-500 font-mono" id="demo-input">
+          Type a YouTrack ticket ID...
+        </div>
+        <button class="px-4 py-2.5 rounded-xl bg-violet-500/80 text-white text-xs font-semibold hover:bg-violet-500 transition-colors">Send</button>
+      </div>
+    </div>
+
+    <p class="text-center text-slate-600 text-xs mt-5 font-mono">
+      mock data · no real API calls · powered by Phase 1 test fixtures
+    </p>
+  </div>
+</section>
+
+
+<!-- ─── ROADMAP ───────────────────────────────────────────────────────────── -->
+<section id="roadmap" class="py-24 bg-navy-800/40 border-t border-white/5">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="text-center mb-14">
+      <p class="text-violet-400 text-xs font-semibold uppercase tracking-widest mb-3">Roadmap</p>
+      <h2 class="text-3xl md:text-4xl font-bold">Built in phases.</h2>
+      <p class="text-slate-400 mt-4 max-w-lg mx-auto text-sm leading-relaxed">
+        Each phase adds an intelligence layer. Phase 1 ships today — the foundation is working.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Phase 1 -->
+      <div class="p-7 rounded-2xl bg-navy-900 border border-green-500/25 relative overflow-hidden card-hover">
+        <div class="absolute top-0 right-0 w-36 h-36 bg-green-500/5 rounded-full -translate-y-10 translate-x-10 pointer-events-none"></div>
+        <div class="flex items-center justify-between mb-5">
+          <span class="text-xs font-medium px-2.5 py-1 rounded-full border badge-done">✓ Complete</span>
+          <span class="text-slate-500 text-xs font-mono">Q1 2026</span>
+        </div>
+        <div class="mb-1 text-slate-400 text-xs font-mono uppercase tracking-wider">Phase 1</div>
+        <h3 class="font-bold text-white text-xl mb-1">Ticket Enricher</h3>
+        <p class="text-slate-500 text-xs mb-5">The foundation — connect, scan, synthesise.</p>
+        <ul class="space-y-2.5 text-sm text-slate-400">
+          <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> ACP server (JetBrains IDE)</li>
+          <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> YouTrack connector</li>
+          <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Local codebase scanner</li>
+          <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> LLM synthesis via Claude</li>
+          <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Linked issue &amp; comment context</li>
+        </ul>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="p-7 rounded-2xl bg-navy-900 border border-violet-500/25 relative overflow-hidden card-hover">
+        <div class="absolute top-0 right-0 w-36 h-36 bg-violet-500/5 rounded-full -translate-y-10 translate-x-10 pointer-events-none"></div>
+        <div class="flex items-center justify-between mb-5">
+          <span class="text-xs font-medium px-2.5 py-1 rounded-full border badge-next">Upcoming</span>
+          <span class="text-slate-500 text-xs font-mono">Q2 2026</span>
+        </div>
+        <div class="mb-1 text-slate-400 text-xs font-mono uppercase tracking-wider">Phase 2</div>
+        <h3 class="font-bold text-white text-xl mb-1">Sprint Intelligence</h3>
+        <p class="text-slate-500 text-xs mb-5">Sprint-level awareness across your whole board.</p>
+        <ul class="space-y-2.5 text-sm text-slate-400">
+          <li class="flex items-start gap-2"><span class="text-violet-400 mt-0.5">◦</span> Sprint overview summariser</li>
+          <li class="flex items-start gap-2"><span class="text-violet-400 mt-0.5">◦</span> Dependency graph</li>
+          <li class="flex items-start gap-2"><span class="text-violet-400 mt-0.5">◦</span> Blocker &amp; risk detection</li>
+          <li class="flex items-start gap-2"><span class="text-violet-400 mt-0.5">◦</span> Effort estimation assist</li>
+          <li class="flex items-start gap-2"><span class="text-violet-400 mt-0.5">◦</span> Team workload overview</li>
+        </ul>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="p-7 rounded-2xl bg-navy-900 border border-white/5 relative overflow-hidden card-hover">
+        <div class="absolute top-0 right-0 w-36 h-36 bg-slate-500/4 rounded-full -translate-y-10 translate-x-10 pointer-events-none"></div>
+        <div class="flex items-center justify-between mb-5">
+          <span class="text-xs font-medium px-2.5 py-1 rounded-full border badge-future">Planned</span>
+          <span class="text-slate-500 text-xs font-mono">Q3 2026</span>
+        </div>
+        <div class="mb-1 text-slate-400 text-xs font-mono uppercase tracking-wider">Phase 3</div>
+        <h3 class="font-bold text-white text-xl mb-1">Customer Demand Layer</h3>
+        <p class="text-slate-500 text-xs mb-5">Close the loop between customers and code.</p>
+        <ul class="space-y-2.5 text-sm text-slate-500">
+          <li class="flex items-start gap-2"><span class="mt-0.5">◦</span> Intercom signal connector</li>
+          <li class="flex items-start gap-2"><span class="mt-0.5">◦</span> Amplitude usage data</li>
+          <li class="flex items-start gap-2"><span class="mt-0.5">◦</span> Feature request clustering</li>
+          <li class="flex items-start gap-2"><span class="mt-0.5">◦</span> Customer impact scoring</li>
+          <li class="flex items-start gap-2"><span class="mt-0.5">◦</span> Revenue-weighted priority</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── FOOTER ────────────────────────────────────────────────────────────── -->
+<footer class="py-12 border-t border-white/5">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-3">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="8" fill="#6C63FF" opacity=".85"/>
+        <path d="M16 6 L21 14 H24 L17 26 L16 20 L15 26 L8 14 H11 Z" fill="white" opacity=".9"/>
+        <circle cx="16" cy="13" r="2.2" fill="white"/>
+      </svg>
+      <div>
+        <div class="font-mono font-semibold text-white leading-tight">pia</div>
+        <div class="text-slate-500 text-xs">Product Intelligence Agent</div>
+      </div>
+    </div>
+    <p class="text-slate-600 text-xs text-center">
+      Built with <span class="text-violet-400">ACP SDK</span> + <span class="text-violet-400">Claude</span> · Runs inside JetBrains IDEs
+    </p>
+    <a href="https://github.com" class="text-slate-400 hover:text-white text-sm transition-colors">GitHub →</a>
+  </div>
+</footer>
+
+
+<!-- ─── DEMO SCRIPT ───────────────────────────────────────────────────────── -->
+<script>
+  const DEMOS = {
+    csv: {
+      inputText: 'Tell me about PROJ-4521',
+      steps: ['Fetching PROJ-4521 from YouTrack…', 'Scanning codebase for relevant files…', 'Synthesising with Claude…'],
+      html: `
+        <div class="space-y-5 text-sm leading-relaxed">
+          <div>
+            <span class="text-violet-400 font-bold text-base">## PROJ-4521 — Add CSV Export to Reports</span><br>
+            <span class="text-slate-500 text-xs mt-1 inline-block">
+              State: <span class="text-red-400 font-medium">Open</span> &nbsp;·&nbsp;
+              Priority: <span class="text-orange-400 font-medium">Critical</span> &nbsp;·&nbsp;
+              Assignee: <span class="text-cyan-400 font-medium">John Doe</span>
+            </span>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Business Context</div>
+            <div class="text-slate-300">
+              Enterprise customers (including <span class="text-yellow-300 font-medium">Acme Corp</span>) have been requesting
+              CSV export from the reporting module. Acme's renewal is in
+              <span class="text-red-400 font-semibold">6 weeks</span>, making this time-sensitive.
+            </div>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Relevant Code Areas</div>
+            <div class="bg-navy-800 rounded-xl p-4 space-y-1.5 text-xs border border-white/5">
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">src/services/export/csv_export.py</span>  <span class="text-slate-500 ml-2">← start here</span></div>
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">src/services/export/controller.py</span>  <span class="text-slate-500 ml-2">← wire the handler</span></div>
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">src/api/routes/reports.py</span>          <span class="text-slate-500 ml-2">← new endpoint</span></div>
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">tests/test_export.py</span>               <span class="text-slate-500 ml-2">← add coverage</span></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Linked Issues</div>
+            <div class="space-y-2 text-sm">
+              <div class="flex items-center gap-2">
+                <span class="text-xs px-1.5 py-0.5 rounded bg-green-500/15 text-green-400 border border-green-500/30 whitespace-nowrap">depends on</span>
+                <span class="text-cyan-300 font-mono">PROJ-4400</span>
+                <span class="text-slate-400">API Refactor — ✅ merged, unblocks this work</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs px-1.5 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30 whitespace-nowrap">related</span>
+                <span class="text-cyan-300 font-mono">PROJ-4389</span>
+                <span class="text-slate-400">PDF Export — use as reference implementation</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs px-1.5 py-0.5 rounded bg-orange-500/15 text-orange-400 border border-orange-500/30 whitespace-nowrap">customer</span>
+                <span class="text-cyan-300 font-mono">HD-892, HD-901</span>
+                <span class="text-slate-400">Acme Corp helpdesk escalations</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Suggested Next Steps</div>
+            <div class="space-y-1.5 text-slate-300">
+              <div>1. Spike the CSV serialisation layer in <code class="text-cyan-300 bg-navy-800 px-1.5 py-0.5 rounded text-xs">csv_export.py</code></div>
+              <div>2. Wire the new endpoint in <code class="text-cyan-300 bg-navy-800 px-1.5 py-0.5 rounded text-xs">reports.py</code></div>
+              <div>3. Add tests following the PDF export pattern in <code class="text-cyan-300 bg-navy-800 px-1.5 py-0.5 rounded text-xs">test_export.py</code></div>
+            </div>
+          </div>
+        </div>`
+    },
+
+    auth: {
+      inputText: "What's the status of AUTH-88?",
+      steps: ['Fetching AUTH-88 from YouTrack…', 'Scanning codebase for relevant files…', 'Synthesising with Claude…'],
+      html: `
+        <div class="space-y-5 text-sm leading-relaxed">
+          <div>
+            <span class="text-violet-400 font-bold text-base">## AUTH-88 — Session timeout too aggressive on mobile</span><br>
+            <span class="text-slate-500 text-xs mt-1 inline-block">
+              State: <span class="text-yellow-400 font-medium">In Progress</span> &nbsp;·&nbsp;
+              Priority: <span class="text-yellow-400 font-medium">Major</span> &nbsp;·&nbsp;
+              Assignee: <span class="text-cyan-400 font-medium">Maria K.</span>
+            </span>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Business Context</div>
+            <div class="text-slate-300">
+              Mobile users are being logged out after <span class="text-yellow-300 font-medium">15 minutes</span> of inactivity.
+              Support received <span class="text-red-400 font-semibold">23 complaints</span> this month.
+              Two enterprise accounts have threatened churn if not resolved this sprint.
+            </div>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Relevant Code Areas</div>
+            <div class="bg-navy-800 rounded-xl p-4 space-y-1.5 text-xs border border-white/5">
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">src/services/auth/service.py</span>   <span class="text-slate-500 ml-2">← session TTL config</span></div>
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">src/api/routes/auth.py</span>          <span class="text-slate-500 ml-2">← refresh token endpoint</span></div>
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">src/models/user.py</span>              <span class="text-slate-500 ml-2">← session model</span></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Suggested Next Steps</div>
+            <div class="space-y-1.5 text-slate-300">
+              <div>1. Increase mobile session TTL to 7 days in <code class="text-cyan-300 bg-navy-800 px-1.5 py-0.5 rounded text-xs">auth/service.py</code></div>
+              <div>2. Add background token refresh in the mobile SDK</div>
+              <div>3. Add regression test for session duration config</div>
+            </div>
+          </div>
+        </div>`
+    },
+
+    perf: {
+      inputText: 'Tell me about PERF-12',
+      steps: ['Fetching PERF-12 from YouTrack…', 'Scanning codebase for relevant files…', 'Synthesising with Claude…'],
+      html: `
+        <div class="space-y-5 text-sm leading-relaxed">
+          <div>
+            <span class="text-violet-400 font-bold text-base">## PERF-12 — Dashboard loads in 8+ seconds for large accounts</span><br>
+            <span class="text-slate-500 text-xs mt-1 inline-block">
+              State: <span class="text-red-400 font-medium">Open</span> &nbsp;·&nbsp;
+              Priority: <span class="text-red-400 font-medium">Critical</span> &nbsp;·&nbsp;
+              Assignee: <span class="text-slate-400 font-medium">Unassigned</span>
+            </span>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Business Context</div>
+            <div class="text-slate-300">
+              Accounts with <span class="text-yellow-300 font-medium">&gt;500 users</span> see 8–12 second load times.
+              Regression introduced in the <span class="text-yellow-300">v2.4 report refactor</span> (3 weeks ago).
+              Two enterprise accounts escalated to Customer Success this week.
+            </div>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Relevant Code Areas</div>
+            <div class="bg-navy-800 rounded-xl p-4 space-y-1.5 text-xs border border-white/5">
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">src/api/routes/reports.py</span>  <span class="text-slate-500 ml-2">← N+1 query likely here</span></div>
+              <div><span class="text-violet-400">→</span> <span class="text-cyan-300">src/models/report.py</span>       <span class="text-slate-500 ml-2">← check eager loading config</span></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-green-400 font-semibold mb-2">Suggested Next Steps</div>
+            <div class="space-y-1.5 text-slate-300">
+              <div>1. Profile with <code class="text-cyan-300 bg-navy-800 px-1.5 py-0.5 rounded text-xs">EXPLAIN ANALYZE</code> on the dashboard query</div>
+              <div>2. Add pagination/cursor to the report list endpoint</div>
+              <div>3. Cache account-level aggregates — they don't need to be real-time</div>
+            </div>
+          </div>
+        </div>`
+    }
+  };
+
+  let running = false;
+
+  async function runDemo(key) {
+    if (running) return;
+    running = true;
+
+    const demo = DEMOS[key];
+    const output = document.getElementById('demo-output');
+    const inputEl = document.getElementById('demo-input');
+
+    // Update pill styles
+    document.querySelectorAll('.demo-pill').forEach(p => {
+      const active = p.dataset.key === key;
+      p.className = p.className
+        .replace(/border-violet-500\/40|text-violet-300|bg-violet-500\/10|border-slate-600|text-slate-400/g, '')
+        .trim();
+      if (active) {
+        p.classList.add('border-violet-500/40', 'text-violet-300', 'bg-violet-500/10');
+      } else {
+        p.classList.add('border-slate-600', 'text-slate-400');
+      }
+    });
+
+    // Clear output
+    output.innerHTML = '';
+
+    // Type the input
+    inputEl.textContent = '';
+    for (let i = 0; i < demo.inputText.length; i++) {
+      await sleep(35);
+      inputEl.textContent = demo.inputText.slice(0, i + 1);
+    }
+    await sleep(350);
+
+    // User message bubble
+    const userBubble = document.createElement('div');
+    userBubble.className = 'flex justify-end mb-5';
+    userBubble.innerHTML = `
+      <div class="bg-violet-500/20 border border-violet-500/30 rounded-xl px-4 py-2.5 text-violet-200 max-w-xs text-sm">
+        ${demo.inputText}
+      </div>`;
+    output.appendChild(userBubble);
+    await sleep(300);
+
+    // Thinking dots
+    const thinkEl = document.createElement('div');
+    thinkEl.className = 'flex items-center gap-3 mb-5 text-slate-500 text-xs font-mono';
+    thinkEl.innerHTML = `
+      <div class="flex gap-1">
+        <span class="dot-bounce" style="animation-delay:0ms"></span>
+        <span class="dot-bounce" style="animation-delay:180ms"></span>
+        <span class="dot-bounce" style="animation-delay:360ms"></span>
+      </div>
+      <span id="think-label">${demo.steps[0]}</span>`;
+    output.appendChild(thinkEl);
+
+    const label = document.getElementById('think-label');
+    for (let i = 1; i < demo.steps.length; i++) {
+      await sleep(700 + i * 100);
+      label.textContent = demo.steps[i];
+    }
+    await sleep(900);
+    thinkEl.remove();
+
+    // Response card
+    const card = document.createElement('div');
+    card.className = 'bg-navy-800 border border-white/5 rounded-xl p-5';
+    card.style.cssText = 'opacity:0;transition:opacity .4s ease';
+    card.innerHTML = demo.html;
+    output.appendChild(card);
+
+    await sleep(30);
+    card.style.opacity = '1';
+
+    // Reset input
+    await sleep(200);
+    inputEl.textContent = 'Type a YouTrack ticket ID...';
+    running = false;
+  }
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  // Auto-run first demo
+  setTimeout(() => runDemo('csv'), 900);
+</script>
+
+</body>
+</html>
