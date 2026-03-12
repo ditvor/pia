@@ -9,7 +9,7 @@ description = "Product intelligence for JetBrains IDEs via ACP"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
 dependencies = [
-    "acp-sdk",
+    "acp-sdk==0.0.6",
     "httpx",
     "click",
     "anthropic",
