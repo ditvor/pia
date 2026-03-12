@@ -46,5 +46,5 @@ PRODUCT-INTELLIGENCE-AGENT.md
 PUBLICATION-PLAN.md
 ACP-REGISTRY-SUBMISSION.md
 
-# Claude Code local settings
-.claude/settings.local.json
+# Claude Code local settings (CLAUDE.md in repo root is intentional; .claude/ dir is not)
+.claude/
