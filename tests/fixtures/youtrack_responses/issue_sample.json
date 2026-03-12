@@ -1,0 +1,94 @@
+{
+  "id": "2-4521",
+  "idReadable": "PROJ-4521",
+  "summary": "Add CSV Export to Reports",
+  "description": "Enterprise customers have requested CSV export for the reporting module.\n\nCurrently reports can only be downloaded as PDF (PROJ-4389).\nAcme Corp and three other enterprise accounts have submitted helpdesk requests.",
+  "project": {
+    "shortName": "PROJ"
+  },
+  "priority": {
+    "name": "Critical"
+  },
+  "state": {
+    "name": "Open"
+  },
+  "assignee": {
+    "login": "john.doe",
+    "fullName": "John Doe"
+  },
+  "reporter": {
+    "login": "sarah.pm",
+    "fullName": "Sarah PM"
+  },
+  "created": 1700000000000,
+  "updated": 1700518400000,
+  "resolved": null,
+  "comments": [
+    {
+      "id": "comment-1",
+      "text": "Acme Corp specifically asked for this in their last quarterly call. Three other enterprise accounts submitted helpdesk requests in the past month.",
+      "author": {
+        "login": "sarah.pm",
+        "fullName": "Sarah PM"
+      },
+      "created": 1700000000000
+    },
+    {
+      "id": "comment-2",
+      "text": "Should be straightforward now that the API refactor (PROJ-4400) is merged. I'll spike it this sprint.",
+      "author": {
+        "login": "john.doe",
+        "fullName": "John Doe"
+      },
+      "created": 1700259200000
+    },
+    {
+      "id": "comment-3",
+      "text": "Can we target Sprint 14? Acme's renewal is in 6 weeks.",
+      "author": {
+        "login": "sarah.pm",
+        "fullName": "Sarah PM"
+      },
+      "created": 1700518400000
+    }
+  ],
+  "tags": [
+    {"name": "enterprise"},
+    {"name": "export"},
+    {"name": "sprint-14"}
+  ],
+  "links": [
+    {
+      "direction": "INWARD",
+      "linkType": {"name": "Depend"},
+      "issues": [
+        {
+          "idReadable": "PROJ-4400",
+          "summary": "API refactor — consolidate report endpoints",
+          "state": {"name": "Fixed"}
+        }
+      ]
+    },
+    {
+      "direction": "OUTWARD",
+      "linkType": {"name": "Relate"},
+      "issues": [
+        {
+          "idReadable": "PROJ-4389",
+          "summary": "Add PDF Export to Reports",
+          "state": {"name": "Fixed"}
+        },
+        {
+          "idReadable": "HD-892",
+          "summary": "Customer request: CSV download from reports",
+          "state": {"name": "Open"}
+        },
+        {
+          "idReadable": "HD-901",
+          "summary": "Export reports to Excel/CSV",
+          "state": {"name": "Open"}
+        }
+      ]
+    }
+  ]
+}

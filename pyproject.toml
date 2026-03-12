@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "product-intelligence-agent"
+version = "0.1.0"
+description = "Product intelligence for JetBrains IDEs via ACP"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dependencies = [
+    "acp-sdk",
+    "httpx",
+    "click",
+    "anthropic",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "sqlite-utils",
+    "sqlalchemy>=2.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+pia = "pia.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "anyio[trio]",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pia"]
