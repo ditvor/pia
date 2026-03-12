@@ -3,25 +3,13 @@
   "name": "PIA — Product Intelligence Agent",
   "version": "0.1.0",
   "description": "Enriches YouTrack tickets with codebase context, linked issues, and customer signals — directly in your JetBrains IDE. Type a ticket ID to get business context, relevant files, and suggested next steps.",
-  "homepage": "https://github.com/YOUR_USERNAME/pia",
+  "repository": "https://github.com/ditvor/pia",
+  "authors": ["ditvor"],
+  "license": "Apache-2.0",
   "distribution": {
     "uvx": {
       "package": "product-intelligence-agent",
-      "command": "pia",
       "args": ["serve"]
     }
-  },
-  "authMethods": [
-    {
-      "id": "terminal-setup",
-      "name": "Configure via terminal",
-      "type": "terminal",
-      "description": "Set your YouTrack URL, YouTrack permanent token, and Anthropic API key as environment variables.",
-      "env": {
-        "YOUTRACK_URL": "Your YouTrack instance URL, e.g. https://yourteam.youtrack.cloud",
-        "YOUTRACK_TOKEN": "YouTrack permanent token (Settings → Account → Manage Tokens)",
-        "ANTHROPIC_API_KEY": "Anthropic API key (console.anthropic.com)"
-      }
-    }
-  ]
+  }
 }
